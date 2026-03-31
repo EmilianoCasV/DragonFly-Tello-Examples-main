@@ -13,7 +13,8 @@ import time
 dron = Tello()
 dron.connect()
 print(f"Batería: {dron.get_battery()}%")
-
+## neto es gay
+print("hola)")
 
 estado_direccion = None
 
