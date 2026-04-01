@@ -1,4 +1,14 @@
-# Codigo Torneo MTY (CTCHI)  detector linea y color
+# Codigo Torneo MTY detector linea y color
+
+## Cosas para calibrar dia competencia :D
+# - Calibracion de colores (rojo,azul y negro) -- esto lo pueden checar en el codigo del color, y luego hacen cambios aqui
+# NOOOOOOO MOVVVEEEER EEEEELLL PIIIIIIIDDDDDDD Ya esta demaciado perfecto :D - atten: EMILIANO
+# - Altura del muro
+#- Distancia del primer cuadro del color al siguiente tramo de linea
+#- Angulo de rotacion de las lineas de V
+#- Ver la cantidad de pixeles
+#- Revisar la ultima vuelta del cuadro para ver si alcanza a detectar la linea
+#- GANAR EL FUCKING PRIMER LUGAR >:D
 
 import cv2
 import numpy as np
@@ -52,7 +62,7 @@ state = 0
 
 
 lower_b = np.array([0])
-upper_b = np.array([45])
+upper_b = np.array([60])
 
 angle=0
 dron.send_rc_control(0,0,0,0)
@@ -114,13 +124,15 @@ while True:
         if (pixel_azul or pixel_rojo) > 70000:
             if color_detectado == "Rojo":
                 dron.move_up(50)
-                dron.move_forward(500)
-                dron.rotate_clockwise(45)
+                dron.move_forward(260)
+                dron.rotate_clockwise(55)
+                dron.move_down(60)
                 state_color = True
             if color_detectado == "Azul":
                 dron.move_up(50)
-                dron.move_forward(500)
-                dron.rotate_counter_clockwise(45)
+                dron.move_forward(260)
+                dron.rotate_counter_clockwise(55)
+                dron.move_down(60)
                 state_color = True
 
 
@@ -186,7 +198,7 @@ while True:
     # print(frame.shape)    # shape do be (480, 640, 3)
     cv2.putText(base,f"Bateria: {dron.get_battery()}",(30,460),cv2.FONT_HERSHEY_TRIPLEX,0.8,(255,0,0),1,cv2.LINE_AA)
     cv2.putText(base, f"Color: {color_detectado}", (30,80), cv2.FONT_HERSHEY_PLAIN, 1.5, (255 ,255 ,255), 2, cv2.LINE_AA)
-    cv2.putText(base, f"No.Pizeles: {pixel_azul}", (30,100), cv2.FONT_HERSHEY_PLAIN, 1.5, (255 ,255 ,255), 2, cv2.LINE_AA)
+    cv2.putText(base, f"No.Pixeles: {pixel_azul}", (30,100), cv2.FONT_HERSHEY_PLAIN, 1.5, (255 ,255 ,255), 2, cv2.LINE_AA)
 
 
     #cv2.imshow('frame', frame)
