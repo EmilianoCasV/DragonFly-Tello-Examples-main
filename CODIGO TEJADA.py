@@ -6,6 +6,8 @@
 #TRUE == DERECHA
 #FALSE == IZQUIERDO
 
+# QUIEN COÑO ES TEJADA ¿¿¿¿????¡?¿'¿¿¡''????
+
 import cv2
 import numpy as np
 import imutils
