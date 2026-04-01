@@ -42,9 +42,9 @@ upper_b = np.array([45])
 
 angle=0
 dron.send_rc_control(0,0,0,0)
-dron.takeoff()
-dron.move_down(20)
-dron.move_forward(40)
+##dron.takeoff()
+##dron.move_down(20)
+##dron.move_forward(40)
 #dron.move_down(20)
 
 
@@ -132,7 +132,7 @@ while True:
 
             if -25 <= error_c <= 25:
                  forward_speed = 14 # Nuevo Cambio (Tejada): Solo crear la variable ya usada en la parte de abajo. Antes solo era el número, ahora tiene nombre de variable.
-                 dron.send_rc_control(-int(x_pid_line((error_c/2), now_time - last_time)), forward_speed, 0,0) # Nuevo Cambio (Tejada): Aquí se aplica la variable forward_speed
+                 #dron.send_rc_control(-int(x_pid_line((error_c/2), now_time - last_time)), forward_speed, 0,0) # Nuevo Cambio (Tejada): Aquí se aplica la variable forward_speed
 
             else:
                 error_x  = x2 - x1
@@ -163,9 +163,10 @@ while True:
                 #dron.send_rc_control(-int(x_pid_line((error_c/2), now_time - last_time)), 10, 0,-int(yaw_pid(angle, now_time - last_time)))
 
                 # Nuevo Cambio (Tejada): Aplicación de la variable forward_speed calculada arriba en lugar de un valor fijo
-                dron.send_rc_control(-int(x_pid_line((error_c/2), now_time - last_time)), forward_speed, 0, int(yaw_pid(angle, now_time - last_time)))
+                #dron.send_rc_control(-int(x_pid_line((error_c/2), now_time - last_time)), forward_speed, 0, int(yaw_pid(angle, now_time - last_time)))
         elif len(centre) == 3:
-            dron.send_rc_control(0,10,0,0)
+            #dron.send_rc_control(0,10,0,0)
+            None
 
         elif len(centre) == 1:
             x1,y1 = centre[0]
@@ -173,7 +174,7 @@ while True:
             error_uno_x = x_center - x1
             error_uno_y = y_center - y1
 
-            dron.send_rc_control(-int(x_pid_april(-error_uno_x, now_time - last_time)),-int(y_pid_april(error_uno_y, now_time - last_time)),0,0)
+            #dron.send_rc_control(-int(x_pid_april(-error_uno_x, now_time - last_time)),-int(y_pid_april(error_uno_y, now_time - last_time)),0,0)
         else:
             dron.send_rc_control(0,0,0,0)
             if estado_direccion:

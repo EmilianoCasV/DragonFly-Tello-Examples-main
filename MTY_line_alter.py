@@ -37,7 +37,7 @@ color_detectado = ""
 
 
 ##------------------PID Controller---------------##
-yaw_pid = PID(1.3, 0.000021, 1, setpoint=0)
+yaw_pid = PID(0.05, 0.000021, 2, setpoint=0)
 #x_pid_line=PID(0.000002, 0.000021, 0.1, setpoint=0) ##jashdjasjdhas
 x_pid_line=PID(0.2, 0.0000001, 0.1, setpoint=0) ##jashdjasjdhas
  
@@ -56,8 +56,8 @@ upper_b = np.array([45])
 
 angle=0
 dron.send_rc_control(0,0,0,0)
-dron.takeoff()
-dron.move_forward(30)
+#dron.takeoff()
+#dron.move_forward(30)
 dron.streamon()
 dron.RESOLUTION_480P
 
@@ -113,13 +113,11 @@ while True:
     if state_color==False:
         if (pixel_azul or pixel_rojo) > 70000:
             if color_detectado == "Rojo":
-                dron.move_up(50)
-                dron.move_forward(500)
+                dron.move_forward(100)
                 dron.rotate_clockwise(45)
                 state_color = True
             if color_detectado == "Azul":
-                dron.move_up(50)
-                dron.move_forward(500)
+                dron.move_forward(100)
                 dron.rotate_counter_clockwise(45)
                 state_color = True
 
@@ -145,8 +143,8 @@ while True:
         cv2.circle(base,(xm,(y1 + y2)//2), 5, (255,0,0), -1)
         cv2.circle(base,(x_center,y_center),5,(0,0,255),-1)
 
-        if -15 <= error_c <= 15:
-            forward_speed = 10  #14 Nuevo Cambio (Tejada): Solo crear la variable ya usada en la parte de abajo. Antes solo era el número, ahora tiene nombre de variable.
+        if -25 <= error_c <= 25:
+            forward_speed = 12  #14 Nuevo Cambio (Tejada): Solo crear la variable ya usada en la parte de abajo. Antes solo era el número, ahora tiene nombre de variable.
             dron.send_rc_control(-int(x_pid_line((error_c/2), now_time - last_time)), forward_speed, 0,0) # Nuevo Cambio (Tejada): Aquí se aplica la variable forward_speed
 
         else:
@@ -156,7 +154,7 @@ while True:
              
               # Nuevo Cambio (Tejada): Nuevas variables para control de velocidad hacia adelante y el ángulo máximo
                 max_speed = 10
-                min_speed = 1
+                min_speed = 0
                 max_angle = 90
 
 

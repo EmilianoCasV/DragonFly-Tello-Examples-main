@@ -8,11 +8,12 @@ drone = Tello()
 
 drone.connect()
 drone.streamon()
+##drone.RESOLUTION_480P
 #drone.takeoff()
 #time.sleep(2)
 
 print(drone.get_battery())
-drone.RESOLUTION_480P
+
 
 while True:
     frame = drone.get_frame_read().frame
