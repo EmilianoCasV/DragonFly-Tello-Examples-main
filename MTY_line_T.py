@@ -12,11 +12,7 @@ import time
 dron = Tello()
 dron.connect()
 print(f"Batería: {dron.get_battery()}%")
-print("hola)")
 
-estado_direccion = None
-
-state_color = False
 
 
 ## -----------------Configuraciones color-----------------##
@@ -31,7 +27,7 @@ bajo_rojo2 = np.array([170, 100, 20])
 alto_rojo2 = np.array([180, 255, 255])
 
 umbral = 500
-color_detectado = ""
+
 ##---------------------------------------------------------##
 
 
@@ -51,14 +47,14 @@ state = 0
 
 
 lower_b = np.array([0])
-upper_b = np.array([60])
+upper_b = np.array([40])
 
 angle=0
 dron.send_rc_control(0,0,0,0)
 dron.takeoff()
 dron.move_forward(30)
 dron.streamon()
-dron.RESOLUTION_480P
+dron.set_video_resolution(dron.RESOLUTION_480P)
 
 
 while True:
@@ -107,24 +103,6 @@ while True:
     else:
         color_detectado = ""
 
-    
-
-    if state_color==False:
-        if (pixel_azul or pixel_rojo) > 70000:
-            if color_detectado == "Rojo":
-                dron.move_up(50)
-                dron.move_forward(260)
-                dron.rotate_clockwise(55)
-                dron.move_down(60)
-                state_color = True
-            if color_detectado == "Azul":
-                dron.move_up(50)
-                dron.move_forward(260)
-                dron.rotate_counter_clockwise(55)
-                dron.move_down(60)
-                state_color = True
-
-
 
     for c in cnts:
         area = cv2.contourArea(c) # find how big countour is
@@ -156,8 +134,8 @@ while True:
                 angle = math.degrees(math.atan2((x1-x2),(y1-y2)))
              
               # Nuevo Cambio (Tejada): Nuevas variables para control de velocidad hacia adelante y el ángulo máximo
-                max_speed = 10
-                min_speed = 1
+                max_speed = 15
+                min_speed = 8
                 max_angle = 90
 
 
@@ -187,14 +165,10 @@ while True:
     # print(frame.shape)    # shape do be (480, 640, 3)
     cv2.putText(base,f"Bateria: {dron.get_battery()}",(30,460),cv2.FONT_HERSHEY_TRIPLEX,0.8,(255,0,0),1,cv2.LINE_AA)
     cv2.putText(base, f"Color: {color_detectado}", (30,80), cv2.FONT_HERSHEY_PLAIN, 1.5, (255 ,255 ,255), 2, cv2.LINE_AA)
-    cv2.putText(base, f"No.Pixeles: {pixel_azul}", (30,100), cv2.FONT_HERSHEY_PLAIN, 1.5, (255 ,255 ,255), 2, cv2.LINE_AA)
-
 
     #cv2.imshow('frame', frame)
     cv2.imshow('base', base)
     cv2.imshow('mask', mask)
-    
-
     
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

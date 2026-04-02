@@ -23,9 +23,6 @@ import time
 dron = Tello()
 dron.connect()
 print(f"Batería: {dron.get_battery()}%")
-print("hola)")
-
-estado_direccion = None
 
 state_color = False
 
