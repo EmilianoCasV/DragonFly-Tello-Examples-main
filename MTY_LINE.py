@@ -25,6 +25,7 @@ dron.connect()
 print(f"Batería: {dron.get_battery()}%")
 
 state_color = False
+state_color_two = False
 
 
 ## -----------------Configuraciones color-----------------##
@@ -65,8 +66,9 @@ angle=0
 dron.send_rc_control(0,0,0,0)
 dron.takeoff()
 dron.move_forward(30)
-dron.streamon()
 dron.RESOLUTION_480P
+dron.set_video_resolution(dron.RESOLUTION_720P)
+dron.move_down(30)
 
 
 while True:
@@ -118,20 +120,26 @@ while True:
     
 
     if state_color==False:
-        if (pixel_azul or pixel_rojo) > 70000:
-            if color_detectado == "Rojo":
-                dron.move_up(50)
-                dron.move_forward(260)
+        if (pixel_azul or pixel_rojo) > 10000:
+            if (color_detectado == "Rojo") and (-10<angle<10):
+                dron.move_forward(100)
                 dron.rotate_clockwise(55)
-                dron.move_down(60)
                 state_color = True
-            if color_detectado == "Azul":
-                dron.move_up(50)
-                dron.move_forward(260)
+            if (color_detectado == "Azul") and (-10<angle<10):
+                dron.move_forward(100)
                 dron.rotate_counter_clockwise(55)
-                dron.move_down(60)
                 state_color = True
-
+    elif (state_color == True) and (state_color_two==False):
+        if (pixel_azul or pixel_rojo) > 10000:
+            if (color_detectado == "Rojo") and (-10<angle<10):
+                dron.rotate_counter_clockwise(90)
+                dron.move_forward(60)
+                state_color_two = True
+            if (color_detectado == "Azul") and (-10<angle<10):
+                dron.rotate_clockwise(45)
+                dron.move_forward(30)
+                state_color_two = True
+                
 
 
     for c in cnts:
@@ -150,6 +158,7 @@ while True:
         x2,y2 = centre[1]
         xm = (x1 + x2)//2
         error_c = xm - x_center 
+
          
         cv2.circle(base,(xm,(y1 + y2)//2), 5, (255,0,0), -1)
         cv2.circle(base,(x_center,y_center),5,(0,0,255),-1)
@@ -171,7 +180,7 @@ while True:
 
                 # Nuevo Cambio (Tejada): Cálculo de la velocidad hacia adelante basada en el ángulo
                 forward_speed = int(max(min_speed, max_speed * (1 - min(abs(angle), max_angle) / max_angle)))
-                print(forward_speed)
+                #print(forward_speed)
 
                 cv2.putText(base,f"Valores PID: {int(yaw_pid(angle, now_time - last_time))}",(30,20),cv2.FONT_HERSHEY_TRIPLEX,0.8,(255,0,0),1,cv2.LINE_AA)
                 cv2.putText(base,f"Angle: {angle:.2f}",(30,40),cv2.FONT_HERSHEY_TRIPLEX,0.8,(255,0,0),1,cv2.LINE_AA)
@@ -188,6 +197,7 @@ while True:
         error_uno_x = x_center - x1
         error_uno_y = y_center - y1
         dron.send_rc_control(-int(x_pid_april(-error_uno_x, now_time - last_time)),-int(y_pid_april(error_uno_y, now_time - last_time)),0,0)
+
     else:
         dron.send_rc_control(0,0,0,0)
         None
