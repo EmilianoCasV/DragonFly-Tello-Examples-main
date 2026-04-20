@@ -60,7 +60,7 @@ state = 0
 
 
 lower_b = np.array([0])
-upper_b = np.array([60])
+upper_b = np.array([70])
 
 angle=0
 dron.send_rc_control(0,0,0,0)
@@ -68,7 +68,7 @@ dron.takeoff()
 dron.move_forward(30)
 dron.streamon()
 dron.RESOLUTION_480P
-dron.move_down(30)
+dron.move_down(50)
 
 
 while True:
@@ -131,14 +131,14 @@ while True:
                 dron.rotate_counter_clockwise(55)
                 state_color = True
     elif (state_color == True) and (state_color_two==False):
-        if (pixel_azul or pixel_rojo) > 10000:
+        if (pixel_azul or pixel_rojo) > 20000:
             if (color_detectado == "Rojo") and (-10<angle<10):
                 dron.rotate_counter_clockwise(90)
                 dron.move_forward(60)
                 state_color_two = True
             if (color_detectado == "Azul") and (-10<angle<10):
                 dron.rotate_clockwise(45)
-                dron.move_forward(30)
+                dron.move_forward(60)
                 state_color_two = True
                 
 
